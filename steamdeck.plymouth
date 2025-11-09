@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=steamdeck
+Description=SteamDeck/SteamOS boot animation + shutdown. By vovamod. (I do not own any of the original artwork and/or animation for Valve, Steam, SteamOS they belong to their originial authors)
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/steamdeck
+ScriptFile=/usr/share/plymouth/themes/steamdeck/steamdeck.script

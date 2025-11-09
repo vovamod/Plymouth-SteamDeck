@@ -1,0 +1,58 @@
+// Global vars
+animation_first_frame = 1;
+startup_anim_lf = 240;
+shutdown_anim_lf = 109;
+animation_current_frame = animation_first_frame;
+mode = Plymouth.GetMode();
+
+if (mode == "boot") {
+    Plymouth.SetRefreshRate(60);
+} else {
+    // Hack. Since my pc shuts down at 1.6s then 2.0
+    Plymouth.SetRefreshRate(110);
+}
+
+
+// Load all animation images first
+startup_anim_images = [];
+shutdown_anim_images = [];
+for (frame = animation_first_frame; frame <= startup_anim_lf; frame++) {
+    startup_anim_images[frame] = Image("images/startup-" + frame + ".png");
+}
+
+for (frame = animation_first_frame; frame <= shutdown_anim_lf; frame++) {
+    shutdown_anim_images[frame] = Image("images/shutdown-" + frame + ".png");
+}
+
+// Initial Setup
+animation_sprite = Sprite();
+animation_sprite.SetImage(startup_anim_images[animation_current_frame]);
+animation_width = startup_anim_images[animation_current_frame].GetWidth();
+animation_height = startup_anim_images[animation_current_frame].GetHeight();
+animation_sprite.SetX((Window.GetWidth() / 2) - (animation_width / 2));
+animation_sprite.SetY((Window.GetHeight() / 2) - (animation_height / 2));
+animation_sprite.SetZ(-1);
+
+// Main function. Check status and play anim accordingly
+fun on_refresh() {
+
+    if (mode == "boot") {
+        animation_sprite.SetImage(startup_anim_images[animation_current_frame]);
+        if (animation_current_frame > startup_anim_lf) {
+            // Wait for system to load
+            animation_current_frame = startup_anim_lf;
+        }
+    } else {
+        animation_sprite.SetImage(shutdown_anim_images[animation_current_frame]);
+        if (animation_current_frame > shutdown_anim_lf) {
+            // Wait for system to shutdown
+            animation_current_frame = shutdown_anim_lf;
+        }
+    }
+
+    // Update frame counter
+    animation_current_frame += 1;
+}
+
+// Add hook
+Plymouth.SetRefreshFunction(on_refresh);
