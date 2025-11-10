@@ -35,3 +35,6 @@ sudo update-alternatives --config default.plymouth
 # update initramfs
 sudo update-initramfs -u
 ```
+
+## Credits
+Original artwork/animations belongs to: [Valve Corporation](https://www.valvesoftware.com/en/)
